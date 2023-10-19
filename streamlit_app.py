@@ -1,14 +1,18 @@
-import streamlit as st # Used for interface
-from langchain.embeddings import OllamaEmbeddings # Used for MiniLM embedding
-from math import dist # Used for euclidian distance metric
-from numpy import dot # Used for dot plot metric
-from numpy.linalg import norm # Used for cosine similarity metric
-from json import dumps # Used for making data objects
+import streamlit as st                              # Used for interface
+from langchain.embeddings import OllamaEmbeddings   # Used for MiniLM embedding
+from math import dist                               # Used for euclidian distance metric
+from numpy import dot                               # Used for dot plot metric
+from numpy import shape                             # Used for verbose embedding output
+from numpy.linalg import norm                       # Used for cosine similarity metric
+from json import dumps                              # Used for making data objects
 
 # Function to make embeddings
-def make_embedding(text):
+def make_embedding(text, verbose=False):
     ollama_emb = OllamaEmbeddings(model='llama2')
     embedding = ollama_emb.embed_query(text)
+    if verbose==True:
+        print('Creating vectors for text "{}"'.format(text))
+        print('Vector shape is {}'.format(shape(embedding)))
     return embedding
 
 # Function to calculate and return metrics as JSON
@@ -37,8 +41,8 @@ text2 = st.text_input("Enter the second text:")
 
 if st.button("Calculate Metrics"):
     if text1 and text2:
-        emb1 = make_embedding(text1)
-        emb2 = make_embedding(text2)
+        emb1 = make_embedding(text1, verbose=False)
+        emb2 = make_embedding(text2, verbose=False)
         metrics = get_mini_LM_metrics(emb1, emb2)
 
         # Display the metrics as JSON
