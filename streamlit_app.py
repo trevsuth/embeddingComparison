@@ -71,9 +71,11 @@ if st.button("Calculate Metrics"):
     if text1 and text2:
         metrics = get_all_metrics(text1, text2)
 
-        # Display the metrics as JSON
-        #st.json(metrics)
-        st.dataframe(pd.DataFrame(calculate_metrics))
+        # Create a DataFrame from the metrics_list
+        df = pd.DataFrame(metrics)
+
+        # Display the DataFrame
+        st.dataframe(df)
     else:
         st.warning("Please enter both texts to calculate metrics.")
 
